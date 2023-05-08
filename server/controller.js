@@ -3,26 +3,54 @@ const Employee = require('./modal');
 
 
 const addEmployee = async (req, res) => {
+  const newEmployee = new Employee(req.body);
+
   try {
-    if (req.body == '') {
-      console.log('Employee Information is Empty')
-    } else {
-      const newEmployee = new Employee({
-        name: req.body.name,
-        role: req.body.role,
-        img: req.body.img
-      })
+    await newEmployee.save();
+    res.send(newEmployee);
+    console.log(newEmployee);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+}
 
-      const res = await newEmployee.save();
+// get Employee---->
 
-      console.log(res);
+const getEmployee = async (req, res) => {
+  const getEmployees = await Employee.find({});
 
-
-
-    }
-
+  try {
+    res.send(getEmployees)
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
+// update Employee ---->
+
+const updateEmployees = async (req, res) => {
+  // const id = req.body._id
+
+  try {
+    const updatedEmp = await Employee.findByIdAndUpdate(req.params.id, req.body);
+    await updatedEmp.save();
+
+    res.send(updatedEmp)
+  } catch (error) {
+    res.status(500).send(error);
+
+  }
+}
+
+// delete Employee ---->
+
+const deleteEmployee = async (req, res) => {
+  try {
+    const deletedEmp = await Employee.findByIdAndDelete(req.params.id);
+    if (!deletedEmp) res.status(404).send("No Employee found");
+    res.status(200).send();
+  } catch (error) {
+    res.status(500).send(error);
   }
 }
 
@@ -34,6 +62,7 @@ const addEmployee = async (req, res) => {
 
 
 
+
 module.exports = {
-  addEmployee
+  addEmployee, getEmployee, updateEmployees, deleteEmployee
 }

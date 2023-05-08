@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function EditModal(props) {
@@ -11,7 +10,6 @@ function EditModal(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // console.log(id, name, role);
 
   return (
     <>
